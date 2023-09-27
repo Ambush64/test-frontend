@@ -1,0 +1,17 @@
+[
+    {
+        "display_name": "Dashboard",
+        "route": "/admin/dashboard",
+        "icon": "bx bx-home-alt"
+    },
+    {
+        "display_name": "Astrologers",
+        "route": "/admin/astrologers",
+        "icon": "bx bx-package"
+    },
+    {
+        "display_name": "Add Product",
+        "route": "/admin/users",
+        "icon": "bx bx-add-to-queue"
+    }
+]
