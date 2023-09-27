@@ -28,7 +28,7 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8090/api/astrologers');
+        const response = await axios.get('https://test-backend-peach.vercel.app/api/astrologers');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -61,7 +61,7 @@ const Products = () => {
 
   const handleEdit = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:8090/api/astrologers/${id}`);
+      const response = await axios.get(`https://test-backend-peach.vercel.app/api/astrologers/${id}`);
 
       setFormData(response.data);
 
@@ -80,7 +80,7 @@ const Products = () => {
   };
 
   const handleSave = async () => {
-    const response = await axios.put(`http://localhost:8090/api/astrologers/${formData.id}`, formData);
+    const response = await axios.put(`https://test-backend-peach.vercel.app/api/astrologers/${formData.id}`, formData);
 
     // Check the HTTP status code in the response
     if (response.status === 200) {

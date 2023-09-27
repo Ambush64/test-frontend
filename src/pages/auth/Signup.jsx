@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8090',
+  baseURL: 'https://test-backend-peach.vercel.app',
 });
 
 
