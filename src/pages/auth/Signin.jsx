@@ -34,7 +34,7 @@ const Signin = () => {
         console.log('Invalid Credentials');
       } else if (response.status === 200) {
         console.log('Login successful');
-        history.push('/admin/users');
+        history.push('/admin/dashboard');
       }
       else {
         console.log('Unexpected error');
