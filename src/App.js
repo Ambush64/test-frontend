@@ -1,48 +1,33 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
-import { adminRoutes, authRoutes } from "./routes/routes";
-import Authlayout from "./layout/Authlayout";
-import Adminlayout from "./layout/Adminlayout";
-// Multi-layout function
-const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) => (
-      <Layout>
-        <Component {...props}></Component>
-      </Layout>
-    )}
-    exact
-  ></Route>
-);
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import RegistrationForm from './RegistrationForm';
+import LoginForm from './LoginForm';
+import AddProductPage from './AddProductPage';
+import ProductGallery from './ProductGallery';
+import ViewCart from './ViewCart';
+import ThankYouPage from './ThankYouPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 function App() {
   return (
-    <Router>
-      <Switch>
-        {authRoutes.map((route, idx) => (
-          <AppRoute
-            key={idx}
-            path={route.path}
-            component={route.component}
-            layout={Authlayout}
-          />
-        ))}
-        {adminRoutes.map((route, idx) => (
-          <AppRoute
-            key={idx}
-            path={route.path}
-            component={route.component}
-            layout={Adminlayout}
-          />
-        ))}
-        <Redirect strict from="/" to="/auth/signin" />
-      </Switch>
-    </Router>
+    <div className="App">
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+
+      <Routes>
+        <Route path="/register" element={<RegistrationForm />} />
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/add-product" element={<AddProductPage />} />
+        <Route path="/product-gallery" element={<ProductGallery />} />
+        <Route path="/view-cart" element={<ViewCart />} />
+        <Route path="/thank-you" element={<ThankYouPage />} />
+        {/* Add a default route or a 404 page */}
+        <Route element={() => <div>Page Not Found</div>} />
+      </Routes>
+    </div>
+
   );
 }
 
