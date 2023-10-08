@@ -19,7 +19,7 @@ function RegistrationForm() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/register', formData);
+            const response = await axios.post('https://test-backend-peach.vercel.app/register', formData);
             if (response.status === 201) {
                 navigate("/")
                 toast.success('Registration successful');

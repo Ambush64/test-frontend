@@ -16,7 +16,7 @@ function ProductGallery() {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:8000/products');
+            const response = await fetch('https://test-backend-peach.vercel.app/products');
             if (response.ok) {
                 const data = await response.json();
                 setProducts(data);

@@ -19,7 +19,7 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/login', formData);
+            const response = await axios.post('https://test-backend-peach.vercel.app/login', formData);
 
             if (response.status === 200) {
                 const token = response.data.token;

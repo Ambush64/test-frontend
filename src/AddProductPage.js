@@ -22,7 +22,7 @@ const AddProductPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/api/add-product', productData);
+            const response = await axios.post('https://test-backend-peach.vercel.app/api/add-product', productData);
             if (response.status === 200) {
                 toast.success('Product added successfully');
                 navigate("/product-gallery")
