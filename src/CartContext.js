@@ -27,19 +27,17 @@ const cartReducer = (state, action) => {
 
         case 'REMOVE_FROM_CART':
             const productIdToRemove = action.payload;
-            const updatedCart = state
-                .map(item =>
-                    item.id === productIdToRemove
-                        ? {
-                            ...item,
-                            quantity: Math.max(1, item.quantity - 1), // Ensure quantity is at least 1
-                        }
-                        : item
-                )
-                .filter(item => item.quantity > 1); // Remove items with quantity 1
+            const updatedCart = state.map(item =>
+                item.id === productIdToRemove
+                    ? { ...item, quantity: Math.max(0, item.quantity - 1) }
+                    : item
+            ).filter(item => item.quantity > 0);
 
             localStorage.setItem('cart', JSON.stringify(updatedCart));
             return updatedCart;
+
+
+
 
 
         case 'INITIALIZE_CART':

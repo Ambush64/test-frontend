@@ -11,7 +11,7 @@ function ViewCart() {
     const removeFromCart = (productId) => {
         dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
 
-        localStorage.setItem('cart', JSON.stringify(cart));
+        // localStorage.setItem('cart', JSON.stringify(cart));
     };
 
     return (
