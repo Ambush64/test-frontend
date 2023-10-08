@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-
+      <LoginForm />
       <Routes>
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/" element={<LoginForm />} />
