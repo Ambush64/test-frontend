@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { auth } from './firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 function LoginForm() {
     const [formData, setFormData] = useState({
@@ -19,13 +20,23 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://test-backend-peach.vercel.app/login', formData);
+            // const response = await axios.post('https://test-backend-peach.vercel.app/login', formData);
 
-            if (response.status === 200) {
-                const token = response.data.token;
-                localStorage.setItem('token', token);
-                navigate('/product-gallery');
+            // if (response.status === 200) {
+            //     const token = response.data.token;
+            // localStorage.setItem('token', token);
+            //     navigate('/product-gallery');
+            // }
+
+            const userCredential = await signInWithEmailAndPassword(auth, formData.username, formData.password);
+            if (userCredential) {
+                localStorage.setItem('token', userCredential.user.accessToken);
+                navigate("/customers")
+            } else {
+                toast.warning('Invalid credentials');
+
             }
+
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 toast.error('Invalid credentials');
@@ -41,9 +52,9 @@ function LoginForm() {
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="username" className="form-label">Username</label>
+                    <label htmlFor="username" className="form-label">Email</label>
                     <input
-                        type="text"
+                        type="email"
                         name="username"
                         value={formData.username}
                         onChange={handleInputChange}
@@ -60,6 +71,7 @@ function LoginForm() {
                         onChange={handleInputChange}
                         className="form-control"
                         id="password"
+                        minLength={6}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Login</button>

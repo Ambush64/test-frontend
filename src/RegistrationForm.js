@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { auth } from './firebase'
+import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+
 
 function RegistrationForm() {
     const [formData, setFormData] = useState({
@@ -19,10 +22,13 @@ function RegistrationForm() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://test-backend-peach.vercel.app/register', formData);
-            if (response.status === 201) {
-                navigate("/")
+            const userCredential = await createUserWithEmailAndPassword(auth, formData.username, formData.password);
+            if (userCredential) {
                 toast.success('Registration successful');
+                navigate("/")
+            } else {
+                toast.warning('Registration unsuccessful');
+
             }
         } catch (error) {
             console.error('Registration failed:', error);
@@ -34,9 +40,9 @@ function RegistrationForm() {
             <h2>Registration</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="username" className="form-label">Username</label>
+                    <label htmlFor="username" className="form-label">Email</label>
                     <input
-                        type="text"
+                        type="email"
                         name="username"
                         value={formData.username}
                         onChange={handleInputChange}
@@ -53,6 +59,7 @@ function RegistrationForm() {
                         onChange={handleInputChange}
                         className="form-control"
                         id="password"
+                        minLength={6}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Register</button>
