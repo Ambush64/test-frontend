@@ -49,7 +49,7 @@ const Accounts = () => {
 
     async function fetchAcc() {
         try {
-            const response = await axios.get('https://test-backend-peach.vercel.app/account-transaction');
+            const response = await axios.get('http://localhost:8000/account-transaction');
             setData(response.data)
             setLoaded(true)
         } catch (error) {

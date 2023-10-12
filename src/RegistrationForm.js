@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { auth } from './firebase'
+import { auth, googleProvider } from './firebase'
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 
 
@@ -35,10 +35,22 @@ function RegistrationForm() {
         }
     };
 
+    const signInWithGoogle = async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+            toast.success('Registration successful');
+            navigate("/")
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+
     return (
         <div className="container">
             <h2>Registration</h2>
             <form onSubmit={handleSubmit}>
+
                 <div className="mb-3">
                     <label htmlFor="username" className="form-label">Email</label>
                     <input
@@ -62,8 +74,11 @@ function RegistrationForm() {
                         minLength={6}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Register</button>
+                <button type="submit" className="btn btn-primary mb-2">Register</button>
             </form>
+            <button className="btn btn-danger" onClick={signInWithGoogle}>
+                Sign up with Google
+            </button>
             <p>Already have an account? <button className="btn btn-link" onClick={() => navigate("/")}>Login</button></p>
         </div>
     );

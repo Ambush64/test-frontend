@@ -45,7 +45,7 @@ const CustomerDataTable = () => {
 
     async function fetchCustomer() {
         try {
-            const response = await axios.get('https://test-backend-peach.vercel.app/customers');
+            const response = await axios.get('http://localhost:8000/customers');
             setData(response.data)
             setLoaded(true)
         } catch (error) {
@@ -94,7 +94,7 @@ const CustomerDataTable = () => {
 
     async function fetchProducts() {
         try {
-            const response = await axios.get('https://test-backend-peach.vercel.app/distinct-products');
+            const response = await axios.get('http://localhost:8000/distinct-products');
             setDistinctProducts(response.data)
         } catch (error) {
             if (error.response && error.response.status === 401) {

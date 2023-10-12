@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { auth } from './firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, googleProvider } from './firebase'
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 
 function LoginForm() {
     const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            // const response = await axios.post('https://test-backend-peach.vercel.app/login', formData);
+            // const response = await axios.post('http://localhost:8000/login', formData);
 
             // if (response.status === 200) {
             //     const token = response.data.token;
@@ -43,6 +43,16 @@ function LoginForm() {
             } else {
                 console.error('Login failed:', error);
             }
+        }
+    };
+
+    const signInWithGoogle = async () => {
+        try {
+            const userCredential = await signInWithPopup(auth, googleProvider);
+            localStorage.setItem('token', userCredential.user.accessToken);
+            navigate("/customers")
+        } catch (err) {
+            console.error(err);
         }
     };
 
@@ -74,8 +84,11 @@ function LoginForm() {
                         minLength={6}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary mb-2">Login</button>
             </form>
+            <button className="btn btn-danger" onClick={signInWithGoogle}>
+                Sign In with Google
+            </button>
             <p>Don't have an account? <button className="btn btn-link" onClick={() => navigate("/register")}>Register</button></p>
         </div>
     );

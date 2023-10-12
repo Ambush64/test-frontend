@@ -10,7 +10,7 @@ function AccountsModal({ accounts, showModal, handleClose }) {
         const id = event.target.value
         setSelectedAccount(id);
 
-        axios.post('https://test-backend-peach.vercel.app/list-transaction', { id })
+        axios.post('http://localhost:8000/list-transaction', { id })
             .then((response) => {
                 setPostDataResponse(response.data.transactions);
             })
