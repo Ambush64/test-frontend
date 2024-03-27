@@ -1,49 +1,49 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { auth, googleProvider } from './firebase'
-import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import axiosInstance from '../axiosInstance';
 
-
-function RegistrationForm() {
+function Signup() {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({});
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
+    const validateEmail = (email) => {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, formData.username, formData.password);
-            if (userCredential) {
-                toast.success('Registration successful');
-                navigate("/")
-            } else {
-                toast.warning('Registration unsuccessful');
+        if (!validateEmail(formData.username)) {
+            setErrors({ email: 'Invalid email format' });
+            return;
+        }
 
+        try {
+            const response = await axiosInstance.post('/registerUser', formData);
+            if (response.status === 201) {
+                toast.success('Registration successful');
+                navigate("/login");
+            } else {
+                toast.error('Registration failed');
             }
         } catch (error) {
             console.error('Registration failed:', error);
+            toast.error('Registration failed');
         }
     };
 
-    const signInWithGoogle = async () => {
-        try {
-            await signInWithPopup(auth, googleProvider);
-            toast.success('Registration successful');
-            navigate("/")
-        } catch (err) {
-            console.error(err);
-        }
-    };
 
 
     return (
@@ -58,9 +58,10 @@ function RegistrationForm() {
                         name="username"
                         value={formData.username}
                         onChange={handleInputChange}
-                        className="form-control"
+                        className={`form-control ${errors.email && 'is-invalid'}`}
                         id="username"
                     />
+                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Password</label>
@@ -76,12 +77,10 @@ function RegistrationForm() {
                 </div>
                 <button type="submit" className="btn btn-primary mb-2">Register</button>
             </form>
-            <button className="btn btn-danger" onClick={signInWithGoogle}>
-                Sign up with Google
-            </button>
             <p>Already have an account? <button className="btn btn-link" onClick={() => navigate("/")}>Login</button></p>
         </div>
     );
+
 }
 
-export default RegistrationForm;
+export default Signup;

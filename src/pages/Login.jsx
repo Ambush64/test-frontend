@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { auth, googleProvider } from './firebase'
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import axiosInstance from '../axiosInstance';
 
-function LoginForm() {
+function Login() {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -20,39 +19,19 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            // const response = await axios.post('http://localhost:8000/login', formData);
+            const response = await axiosInstance.post('/login', formData);
 
-            // if (response.status === 200) {
-            //     const token = response.data.token;
-            // localStorage.setItem('token', token);
-            //     navigate('/product-gallery');
-            // }
-
-            const userCredential = await signInWithEmailAndPassword(auth, formData.username, formData.password);
-            if (userCredential) {
-                localStorage.setItem('token', userCredential.user.accessToken);
-                navigate("/customers")
-            } else {
-                toast.warning('Invalid credentials');
-
+            if (response.status === 200) {
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                navigate('/');
             }
-
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 toast.error('Invalid credentials');
             } else {
                 console.error('Login failed:', error);
             }
-        }
-    };
-
-    const signInWithGoogle = async () => {
-        try {
-            const userCredential = await signInWithPopup(auth, googleProvider);
-            localStorage.setItem('token', userCredential.user.accessToken);
-            navigate("/customers")
-        } catch (err) {
-            console.error(err);
         }
     };
 
@@ -86,12 +65,9 @@ function LoginForm() {
                 </div>
                 <button type="submit" className="btn btn-primary mb-2">Login</button>
             </form>
-            <button className="btn btn-danger" onClick={signInWithGoogle}>
-                Sign In with Google
-            </button>
-            <p>Don't have an account? <button className="btn btn-link" onClick={() => navigate("/register")}>Register</button></p>
+            <p>Don't have an account? <button className="btn btn-link" onClick={() => navigate("/signup")}>Register</button></p>
         </div>
     );
 }
 
-export default LoginForm;
+export default Login;
